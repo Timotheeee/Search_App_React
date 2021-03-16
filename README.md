@@ -2,7 +2,8 @@
 
 
 # MOBA2 - Mini Project
-MOBA2 Mobile Applications 2
+MOBA2 Mobile Applications 2 
+
 An App to search for GitHub Repositories
 
 ## Authors: 
