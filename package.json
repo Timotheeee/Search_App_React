@@ -1,6 +1,9 @@
 {
   "name": "MOBA2-MiniProject",
   "version": "1.0.0",
+  "engines": {
+    "yarn": "1.x"
+  },
   "description": "An App to search for GitHub Repositories",
   "main": "server.js",
   "private": true,
