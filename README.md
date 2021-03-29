@@ -1,5 +1,4 @@
 # MOBA2 - Mini Project
-
 An App to search for GitHub Repositories
 
 ## Branch 
