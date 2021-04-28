@@ -1,6 +1,7 @@
 //
 //  Search_AppApp.swift
-//  Search_App
+//  MOBA2 - Mini Project
+//  GitHub Repository Search_App
 //
 //  Created by Gabriele Pace (pacegab1) & Timothé Laborie (labortim)
 //
