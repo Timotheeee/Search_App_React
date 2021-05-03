@@ -47,12 +47,13 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 TextField("Search for Repositories", text: $search)
-                  //  .textFieldStyle(RoundedBorderTextFieldStyle())
-                  //  .keyboardType(UIKeyboardType.default).padding()
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(UIKeyboardType.default).padding()
                 Button(action: {
                     repos = loadJSON(s: search)
                     print("loaded the json")
-                }) {
+                })
+                {
                     Text("Search")
                 }
                 
@@ -60,7 +61,10 @@ struct ContentView: View {
                     NavigationLink(r.name,destination:DetailView(repo:r))
                 }
                 
-            }.navigationTitle("GitHub Repo Search")
+            }
+            //.border(Color.black, width: 1)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .navigationTitle("GitHub Repo Search")
             
         }.navigationViewStyle(StackNavigationViewStyle())
     }
