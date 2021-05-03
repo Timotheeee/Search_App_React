@@ -8,13 +8,22 @@
 
 import SwiftUI
 
+struct Owner : Decodable, Identifiable {
+    var login: String
+    var avatar_url: String
+    var id: String {
+        get {
+            return login;
+        }
+    }
+}
+
 struct RepositoryOverview : Decodable, Identifiable {
     var name: String
-    var description: String
-    var owner: String
-    var avatar_url: String
+    var description: String?
+    //var owner: [Owner]
     var created_at: String
-    var forks: String
+    var forks: Int64
     var id: String {
         get {
             return name;
@@ -23,27 +32,34 @@ struct RepositoryOverview : Decodable, Identifiable {
 }
 
 struct RepositoryList : Decodable {
-    var repoList: [RepositoryOverview]
+    var items: [RepositoryOverview]
 }
 
 struct ContentView: View {
     
-    @State var repo = [RepositoryList]()
+    @State var repos = RepositoryList(items: [RepositoryOverview]())
+    @State var selected = 0
+    @State private var search: String = ""
+
+    
     
     var body: some View {
         NavigationView {
             VStack {
-                // TextField("Search for Repositories", text: $repo.name)
+                TextField("Search for Repositories", text: $search)
                   //  .textFieldStyle(RoundedBorderTextFieldStyle())
                   //  .keyboardType(UIKeyboardType.default).padding()
-                
-                NavigationLink(destination: DetailView()) {
-                    Button(action: {
-                        
-                    }) {
-                        Text("Search")
-                    }
+                Button(action: {
+                    repos = loadJSON(s: search)
+                    print("loaded the json")
+                }) {
+                    Text("Search")
                 }
+                
+                List(repos.items){r in
+                    NavigationLink(r.name,destination:DetailView(repo:r))
+                }
+                
             }.navigationTitle("GitHub Repo Search")
             
         }.navigationViewStyle(StackNavigationViewStyle())
@@ -51,32 +67,33 @@ struct ContentView: View {
     
     struct DetailView : View {
         
-        @State var repo = [RepositoryList]()
+        @State var repo : RepositoryOverview
         
         var body: some View {
-            //List ($repo.repoList) { entry in
                 VStack(alignment: .leading) {
-                    //Text("\(entry.name)")
-                    //Text("\(entry.description)").foot(.footnote)
+                    Text("\(repo.name)").font(Font.system(size:30, design: .default))
+                    Text("\(repo.description ?? "null")")
+                    //Text("\(repo.owner.login)")
+                    Text("created: \(repo.created_at)")
+                    Text("forks: \(repo.forks)")
                 }
-        /*}*/.onAppear {
-                // self.repo = loadJSON()!
-            }
         }
     }
 }
 
-func loadJSON() -> RepositoryList? {
+func loadJSON(s: String) -> RepositoryList {
     do {
-        if let url = URL(string: "https://api.github.com/search/repositories?q=") {
+        if let url = URL(string: "https://api.github.com/search/repositories?q=" + s) {
             let data = try Data(contentsOf: url)
+            print("loaded data")
             let decoder = JSONDecoder()
+            print("decoding the json")
             return try decoder.decode(RepositoryList.self, from: data)
         }
     } catch {
         fatalError("Couldn't load file from url bundle:\n\(error)")
     }
-    return nil
+    return RepositoryList(items: [RepositoryOverview]())
 }
 
 struct ContentView_Previews: PreviewProvider {
