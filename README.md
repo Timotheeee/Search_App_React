@@ -8,6 +8,7 @@ An App to search for GitHub Repositories
 
 ## Branch
 React.js: [react.js](https://github.com/Timotheeee/Search_App_React/tree/react.js)
+iOS native: [main](https://github.com/Timotheeee/Search_App_React/tree/main)
 
 ## Link
 [https://moba2-react-pacegab1-labortim.herokuapp.com](https://moba2-react-pacegab1-labortim.herokuapp.com)
