@@ -21,7 +21,6 @@ struct Owner : Decodable, Identifiable {
 struct RepositoryOverview : Decodable, Identifiable {
     var name: String
     var description: String?
-    //var owner: [Owner]
     var created_at: String
     var forks: Int64
     var id: String {
@@ -35,15 +34,27 @@ struct RepositoryList : Decodable {
     var items: [RepositoryOverview]
 }
 
+struct BlueButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .frame(width: 90, height: 40)
+            .background(Color.init(.systemBlue))
+            .foregroundColor(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
+    }
+}
+
 struct ContentView: View {
     
     @State var repos = RepositoryList(items: [RepositoryOverview]())
     @State var selected = 0
     @State private var search: String = ""
 
-    
-    
     var body: some View {
+        Text("GitHub Repository Search").font(.largeTitle).bold().offset(y: 7)
+        Text("© Gabriele Pace (pacegab1) & Timothé Laborie (labortim)").font(.footnote).offset(y: 10)
+        
         NavigationView {
             VStack {
                 TextField("Search for Repositories", text: $search)
@@ -55,17 +66,13 @@ struct ContentView: View {
                 })
                 {
                     Text("Search")
-                }
+                }.buttonStyle(BlueButton())
                 
                 List(repos.items){r in
                     NavigationLink(r.name,destination:DetailView(repo:r))
                 }
-                
             }
-            //.border(Color.black, width: 1)
-            .clipShape(RoundedRectangle(cornerRadius: 5))
-            .navigationTitle("GitHub Repo Search")
-            
+            .navigationBarHidden(true)
         }.navigationViewStyle(StackNavigationViewStyle())
     }
     
@@ -77,9 +84,8 @@ struct ContentView: View {
                 VStack(alignment: .leading) {
                     Text("\(repo.name)").font(Font.system(size:30, design: .default))
                     Text("\(repo.description ?? "null")")
-                    //Text("\(repo.owner.login)")
-                    Text("created: \(repo.created_at)")
-                    Text("forks: \(repo.forks)")
+                    Text("Created: \(repo.created_at)")
+                    Text("Forks: \(repo.forks)")
                 }
         }
     }
@@ -89,9 +95,9 @@ func loadJSON(s: String) -> RepositoryList {
     do {
         if let url = URL(string: "https://api.github.com/search/repositories?q=" + s) {
             let data = try Data(contentsOf: url)
-            print("loaded data")
+            print("Loaded data")
             let decoder = JSONDecoder()
-            print("decoding the json")
+            print("Decoding the json")
             return try decoder.decode(RepositoryList.self, from: data)
         }
     } catch {
