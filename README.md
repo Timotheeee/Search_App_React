@@ -7,7 +7,7 @@ An App to search for GitHub Repositories
  * Timothé Laborie ([labortim](https://github.zhaw.ch/labortim))
 
 ## Branch
-React.js: [react.js](https://github.com/Timotheeee/Search_App_React/tree/react.js)
+React.js: [react.js](https://github.com/Timotheeee/Search_App_React/tree/react.js)  
 iOS native: [main](https://github.com/Timotheeee/Search_App_React/tree/main)
 
 ## Link
